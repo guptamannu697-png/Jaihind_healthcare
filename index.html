@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaihind Healthcare - Patient Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00A8A8;
+            --primary-dark: #008080;
+            --accent: #FF6B6B;
+            --bg-light: #F8FFFE;
+            --bg-white: #FFFFFF;
+            --text-dark: #1A2530;
+            --text-gray: #637381;
+            --shadow-soft: 0 10px 40px rgba(0, 168, 168, 0.1);
+            --shadow-hover: 0 20px 60px rgba(0, 168, 168, 0.15);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #F8FFFE 0%, #E8F8F8 100%);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 168, 168, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -400px;
+            right: -200px;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -300px;
+            left: -100px;
+            animation: float 15s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(50px, 50px) rotate(120deg); }
+            66% { transform: translate(-30px, 80px) rotate(240deg); }
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow-soft);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 168, 168, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 168, 168, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Services Grid */
+        .services {
+            max-width: 1400px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--bg-white);
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 168, 168, 0.2);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .service-card p {
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        .service-info {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #E8F8F8;
+            animation: fadeIn 0.3s;
+        }
+
+        .service-card.active .service-info {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Appointment Form */
+        .appointment {
+            max-width: 1400px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .form-container {
+            background: var(--bg-white);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow-hover);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #E8F8F8;
+            border-radius: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 168, 168, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            max-width: 1400px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 2rem;
+            border-radius: 25px;
+            color: white;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .appointments-list {
+            background: var(--bg-white);
+            padding: 2rem;
+            border-radius: 25px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .appointment-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #E8F8F8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .appointment-item:hover {
+            background: #F8FFFE;
+            transform: translateX(10px);
+        }
+
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer with Designer Credits */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-about h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .designer-credit {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 2rem;
+            border: 2px solid rgba(0, 168, 168, 0.2);
+        }
+
+        .designer-name {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        .designer-name:hover {
+            color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .designer-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1.5rem;
+        }
+
+        .designer-contact {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 1.5rem;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .designer-contact.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 168, 168, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            background: rgba(0, 168, 168, 0.2);
+            transform: translateX(5px);
+        }
+
+        .contact-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Lifestyle Disease Checkboxes Hover Effect */
+        label:has(input[type="checkbox"]):hover {
+            background: var(--primary) !important;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        label:has(input[type="checkbox"]:checked) {
+            background: var(--primary) !important;
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-gray);
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #00A8A8 0%, #008080 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 1.5rem;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">Jaihind <span>Healthcare</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#appointment">Patient Registration</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Your Health, Our Priority</h1>
+            <p>Experience world-class healthcare with compassionate care. We provide comprehensive medical services with state-of-the-art facilities and expert doctors.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="scrollToSection('appointment')">Register Patient</button>
+                <button class="btn btn-secondary" onclick="scrollToSection('services')">Our Services</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="data:image/svg+xml,%3Csvg width='600' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Crect fill='%2300A8A8' width='600' height='400' rx='30'/%3E%3Ctext x='50%25' y='50%25' font-size='24' fill='white' text-anchor='middle' dy='.3em' font-family='Arial'%3E🏥 Healthcare Excellence%3C/text%3E%3C/svg%3E" alt="Healthcare">
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <h2 class="section-title">Our Medical Services</h2>
+        <div class="services-grid">
+            <div class="service-card" onclick="toggleServiceInfo(this)">
+                <div class="service-icon">🩺</div>
+                <h3>General Medicine</h3>
+                <p>Comprehensive primary care for all your health needs</p>
+                <div class="service-info">
+                    <p><strong>Services Include:</strong></p>
+                    <ul>
+                        <li>• Routine checkups and physical examinations</li>
+                        <li>• Preventive care and health screenings</li>
+                        <li>• Management of chronic diseases</li>
+                        <li>• Health counseling and lifestyle advice</li>
+                    </ul>
+                    <p><strong>Timings:</strong> Mon-Sat, 9 AM - 6 PM</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="toggleServiceInfo(this)">
+                <div class="service-icon">❤️</div>
+                <h3>Cardiology</h3>
+                <p>Expert heart care with advanced diagnostic facilities</p>
+                <div class="service-info">
+                    <p><strong>Services Include:</strong></p>
+                    <ul>
+                        <li>• ECG and Echocardiography</li>
+                        <li>• Stress testing and monitoring</li>
+                        <li>• Heart disease management</li>
+                        <li>• Cardiac rehabilitation programs</li>
+                    </ul>
+                    <p><strong>Timings:</strong> Mon-Sat, 10 AM - 5 PM</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="toggleServiceInfo(this)">
+                <div class="service-icon">🦴</div>
+                <h3>Orthopedics</h3>
+                <p>Specialized treatment for bone and joint conditions</p>
+                <div class="service-info">
+                    <p><strong>Services Include:</strong></p>
+                    <ul>
+                        <li>• Joint replacement surgery</li>
+                        <li>• Sports injury treatment</li>
+                        <li>• Arthritis management</li>
+                        <li>• Fracture care and rehabilitation</li>
+                    </ul>
+                    <p><strong>Timings:</strong> Mon-Fri, 9 AM - 4 PM</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="toggleServiceInfo(this)">
+                <div class="service-icon">🧪</div>
+                <h3>Diagnostic Lab</h3>
+                <p>State-of-the-art laboratory with accurate results</p>
+                <div class="service-info">
+                    <p><strong>Services Include:</strong></p>
+                    <ul>
+                        <li>• Blood tests and pathology</li>
+                        <li>• X-Ray and ultrasound imaging</li>
+                        <li>• CT Scan and MRI facilities</li>
+                        <li>• Same-day reports available</li>
+                    </ul>
+                    <p><strong>Timings:</strong> Mon-Sun, 8 AM - 8 PM</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="toggleServiceInfo(this)">
+                <div class="service-icon">👶</div>
+                <h3>Pediatrics</h3>
+                <p>Specialized care for infants, children, and adolescents</p>
+                <div class="service-info">
+                    <p><strong>Services Include:</strong></p>
+                    <ul>
+                        <li>• Newborn and infant care</li>
+                        <li>• Vaccination programs</li>
+                        <li>• Growth monitoring</li>
+                        <li>• Child development assessment</li>
+                    </ul>
+                    <p><strong>Timings:</strong> Mon-Sat, 10 AM - 6 PM</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="toggleServiceInfo(this)">
+                <div class="service-icon">🚑</div>
+                <h3>Emergency Care</h3>
+                <p>24/7 emergency services with immediate medical attention</p>
+                <div class="service-info">
+                    <p><strong>Services Include:</strong></p>
+                    <ul>
+                        <li>• Trauma care and first aid</li>
+                        <li>• Ambulance services</li>
+                        <li>• Critical care unit</li>
+                        <li>• Emergency surgery facilities</li>
+                    </ul>
+                    <p><strong>Timings:</strong> 24/7 Available</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment Booking Section -->
+    <section class="appointment" id="appointment">
+        <h2 class="section-title">Patient Registration Form</h2>
+        <div class="form-container">
+            <form id="appointmentForm">
+                <!-- Basic Information -->
+                <h3 style="color: var(--primary); margin-bottom: 1.5rem; font-size: 1.3rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">📋 Basic Information</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">Patient Name *</label>
+                        <input type="text" id="fullName" required placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input type="number" id="age" required placeholder="Enter age">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sex">Sex *</label>
+                        <select id="sex" required>
+                            <option value="">Select Sex</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bloodGroup">Blood Group *</label>
+                        <select id="bloodGroup" required>
+                            <option value="">Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" required placeholder="+91 XXXXX XXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="your.email@example.com">
+                    </div>
+                </div>
+
+                <!-- Medical History -->
+                <h3 style="color: var(--primary); margin: 2rem 0 1.5rem; font-size: 1.3rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">🏥 Medical History</h3>
+
+                <div class="form-group">
+                    <label for="currentHistory">Current History (Present Problem) *</label>
+                    <textarea id="currentHistory" rows="3" required placeholder="Describe current symptoms and health concerns"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="pastMedicalHistory">Past Medical History</label>
+                    <textarea id="pastMedicalHistory" rows="3" placeholder="Previous illnesses, surgeries, hospitalizations"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="familyMedicalHistory">Family Medical History</label>
+                    <textarea id="familyMedicalHistory" rows="3" placeholder="Any hereditary diseases in family (diabetes, heart disease, cancer, etc.)"></textarea>
+                </div>
+
+                <!-- Lifestyle Diseases -->
+                <h3 style="color: var(--primary); margin: 2rem 0 1.5rem; font-size: 1.3rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">💊 Lifestyle Diseases</h3>
+
+                <div class="form-group">
+                    <label style="margin-bottom: 1rem; display: block;">Do you have any of the following conditions?</label>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.8rem; background: #F8FFFE; border-radius: 10px; transition: all 0.3s;">
+                            <input type="checkbox" id="bp" name="lifestyle" value="bp" style="width: auto;">
+                            <span>High Blood Pressure (BP)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.8rem; background: #F8FFFE; border-radius: 10px; transition: all 0.3s;">
+                            <input type="checkbox" id="diabetes" name="lifestyle" value="diabetes" style="width: auto;">
+                            <span>Diabetes</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.8rem; background: #F8FFFE; border-radius: 10px; transition: all 0.3s;">
+                            <input type="checkbox" id="thyroid" name="lifestyle" value="thyroid" style="width: auto;">
+                            <span>Thyroid Disorder</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.8rem; background: #F8FFFE; border-radius: 10px; transition: all 0.3s;">
+                            <input type="checkbox" id="obesity" name="lifestyle" value="obesity" style="width: auto;">
+                            <span>Obesity</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.8rem; background: #F8FFFE; border-radius: 10px; transition: all 0.3s;">
+                            <input type="checkbox" id="cholesterol" name="lifestyle" value="cholesterol" style="width: auto;">
+                            <span>High Cholesterol</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.8rem; background: #F8FFFE; border-radius: 10px; transition: all 0.3s;">
+                            <input type="checkbox" id="other" name="lifestyle" value="other" style="width: auto;">
+                            <span>Other</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Lab Reports & Treatment -->
+                <h3 style="color: var(--primary); margin: 2rem 0 1.5rem; font-size: 1.3rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;">📊 Treatment Details</h3>
+
+                <div class="form-group">
+                    <label for="labReports">Recent Lab Reports / Test Results</label>
+                    <textarea id="labReports" rows="3" placeholder="Enter any recent lab test results (CBC, X-Ray, etc.)"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="treatingPhysician">Treating Physician</label>
+                        <input type="text" id="treatingPhysician" placeholder="Doctor's name (if any)">
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department *</label>
+                        <select id="department" required>
+                            <option value="">Select Department</option>
+                            <option value="general">General Medicine</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="orthopedics">Orthopedics</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="lab">Diagnostic Lab</option>
+                            <option value="emergency">Emergency</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="admissionDate">Admission Date *</label>
+                        <input type="date" id="admissionDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentDate">Appointment Date</label>
+                        <input type="date" id="appointmentDate">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">Submit Patient Registration</button>
+
+                <div class="success-message" id="successMessage">
+                    ✓ Patient registration submitted successfully! Your details have been recorded.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard" id="dashboard">
+        <h2 class="section-title">Patient Dashboard</h2>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalPatients">0</div>
+                <div class="stat-label">Total Appointments</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);">
+                <div class="stat-number" id="todayPatients">0</div>
+                <div class="stat-label">Today's Appointments</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);">
+                <div class="stat-number" id="completedAppts">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #95E1D3 0%, #38A2A6 100%);">
+                <div class="stat-number" id="pendingAppts">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
+
+        <div class="appointments-list">
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Recent Appointments</h3>
+            <div id="appointmentsList">
+                <div class="appointment-item">
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 0.3rem;">No appointments yet</div>
+                        <div style="color: var(--text-gray); font-size: 0.9rem;">Book your first appointment above</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>Jaihind Healthcare</h3>
+                <p>Providing quality healthcare services with compassion and excellence. Your trusted partner in health and wellness.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#appointment">Patient Registration</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="tel:+911234567890">📞 +91 123 456 7890</a></li>
+                    <li><a href="mailto:info@jainhindhealthcare.com">✉️ info@jainhindhealthcare.com</a></li>
+                    <li>📍 Medical District, Healthcare City</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Designer Credit Section -->
+        <div class="designer-credit">
+            <div class="designer-label">DESIGNED BY</div>
+            <div class="designer-name" onclick="toggleDesignerContact()">MANU</div>
+            <div class="designer-contact" id="designerContact">
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <a href="mailto:guptamannu697@gmail.com">guptamannu697@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <a href="tel:+919217247578">+91 9217247578</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">💼</span>
+                    <a href="https://www.linkedin.com/in/manugupta79" target="_blank">LinkedIn Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 2rem 0 1rem; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 2rem;">
+            <p style="color: rgba(255,255,255,0.6);">&copy; 2025 Jaihind Healthcare. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Appointments storage
+        let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+        // Form submission
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get lifestyle diseases checkboxes
+            const lifestyleDiseases = [];
+            document.querySelectorAll('input[name="lifestyle"]:checked').forEach(checkbox => {
+                lifestyleDiseases.push(checkbox.value);
+            });
+
+            const appointment = {
+                id: Date.now(),
+                // Basic Information
+                fullName: document.getElementById('fullName').value,
+                age: document.getElementById('age').value,
+                sex: document.getElementById('sex').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                
+                // Medical History
+                currentHistory: document.getElementById('currentHistory').value,
+                pastMedicalHistory: document.getElementById('pastMedicalHistory').value,
+                familyMedicalHistory: document.getElementById('familyMedicalHistory').value,
+                
+                // Lifestyle Diseases
+                lifestyleDiseases: lifestyleDiseases,
+                
+                // Treatment Details
+                labReports: document.getElementById('labReports').value,
+                treatingPhysician: document.getElementById('treatingPhysician').value,
+                department: document.getElementById('department').value,
+                admissionDate: document.getElementById('admissionDate').value,
+                appointmentDate: document.getElementById('appointmentDate').value,
+                
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+
+            appointments.push(appointment);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+
+            // Show success message
+            document.getElementById('successMessage').classList.add('active');
+            
+            // Reset form
+            this.reset();
+
+            // Update dashboard
+            updateDashboard();
+
+            // Scroll to success message
+            document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').classList.remove('active');
+            }, 5000);
+        });
+
+        // Toggle service info
+        function toggleServiceInfo(card) {
+            const allCards = document.querySelectorAll('.service-card');
+            allCards.forEach(c => {
+                if (c !== card) {
+                    c.classList.remove('active');
+                }
+            });
+            card.classList.toggle('active');
+        }
+
+        // Toggle designer contact
+        function toggleDesignerContact() {
+            const contact = document.getElementById('designerContact');
+            contact.classList.toggle('active');
+        }
+
+        // Scroll to section
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = appointments.filter(apt => apt.admissionDate === today || apt.appointmentDate === today);
+            const completed = appointments.filter(apt => apt.status === 'completed');
+            const pending = appointments.filter(apt => apt.status === 'pending');
+
+            document.getElementById('totalPatients').textContent = appointments.length;
+            document.getElementById('todayPatients').textContent = todayAppointments.length;
+            document.getElementById('completedAppts').textContent = completed.length;
+            document.getElementById('pendingAppts').textContent = pending.length;
+
+            // Update appointments list
+            const listHtml = appointments.length > 0 
+                ? appointments.slice(-5).reverse().map(apt => `
+                    <div class="appointment-item">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 1.1rem;">${apt.fullName} (${apt.age}y, ${apt.sex})</div>
+                            <div style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 0.3rem;">
+                                🩸 ${apt.bloodGroup} | 📞 ${apt.phone}
+                            </div>
+                            <div style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 0.3rem;">
+                                🏥 ${apt.department} | 📅 ${apt.admissionDate}
+                            </div>
+                            ${apt.lifestyleDiseases && apt.lifestyleDiseases.length > 0 ? `
+                                <div style="color: var(--accent); font-size: 0.85rem; margin-top: 0.5rem;">
+                                    💊 ${apt.lifestyleDiseases.join(', ')}
+                                </div>
+                            ` : ''}
+                            <div style="color: var(--text-gray); font-size: 0.85rem; margin-top: 0.5rem; font-style: italic;">
+                                "${apt.currentHistory.substring(0, 80)}${apt.currentHistory.length > 80 ? '...' : ''}"
+                            </div>
+                        </div>
+                        <div style="background: ${apt.status === 'completed' ? '#4ECDC4' : '#FFD93D'}; 
+                                    color: ${apt.status === 'completed' ? 'white' : '#333'}; 
+                                    padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; height: fit-content;">
+                            ${apt.status.toUpperCase()}
+                        </div>
+                    </div>
+                `).join('')
+                : `<div class="appointment-item">
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 0.3rem;">No patient registrations yet</div>
+                        <div style="color: var(--text-gray); font-size: 0.9rem;">Register your first patient above</div>
+                    </div>
+                </div>`;
+
+            document.getElementById('appointmentsList').innerHTML = listHtml;
+        }
+
+        // Animate numbers on scroll
+        function animateNumbers() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const finalValue = parseInt(target.textContent);
+                        let current = 0;
+                        const increment = finalValue / 50;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= finalValue) {
+                                target.textContent = finalValue;
+                                clearInterval(timer);
+                            } else {
+                                target.textContent = Math.floor(current);
+                            }
+                        }, 20);
+                        observer.unobserve(target);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.stat-number').forEach(num => observer.observe(num));
+        }
+
+        // Set minimum date for appointment and admission
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('appointmentDate').setAttribute('min', today);
+        document.getElementById('admissionDate').setAttribute('min', today);
+
+        // Initialize dashboard
+        updateDashboard();
+        animateNumbers();
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+    </script>
+</body>
+</html>
